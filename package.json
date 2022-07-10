@@ -1,0 +1,23 @@
+{
+  "name": "node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@polkadot/api": "^8.11.1",
+    "@polkadot/api-augment": "^8.11.1",
+    "@polkadot/api-base": "^8.11.1",
+    "@polkadot/api-contract": "^8.11.1",
+    "@polkadot/api-derive": "^8.11.1",
+    "@polkadot/ui-keyring": "^2.7.1",
+    "@polkadot/util": "^9.7.1",
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1"
+  }
+}
