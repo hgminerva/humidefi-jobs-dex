@@ -16,5 +16,5 @@ node storeTickerPrice.js
 
 To query the ticker prices
 ```
-node 
+node queryTickerDataStore.js
 ```
