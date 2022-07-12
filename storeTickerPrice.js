@@ -39,7 +39,9 @@ async function main() {
     //const addressPair = keyring.addFromAddress(caller_address);
     const keyring = new Keyring({ type: 'sr25519' });
     const alice = keyring.addFromUri(process.env.ALICE_URI);
-    await api.tx.dexModule.storeTickerPrice(ticker_json).signAndSend(alice);
+    await api.tx.sudo.sudo(
+        api.tx.dexModule.storeTickerPrice(ticker_json)
+    ).signAndSend(alice);
 }
 
 main().catch(console.error).finally(() => process.exit());
