@@ -9,8 +9,9 @@ async function getPrices() {
     var ticker_json = "";
     await axios.get(process.env.API_LAYER)
         .then((res) => {
-            const umi_rate = 1;
-            const phpu_rate = res.data.rates.PHP;
+            const humidefi_decimal = 100_000_000_000_000;
+            const umi_rate = 1 * humidefi_decimal;
+            const phpu_rate = res.data.rates.PHP * humidefi_decimal;
 
             var tickers = {};
             var ticker1 = {ticker: 'UMI', price_in_usd: umi_rate};
