@@ -7,9 +7,11 @@ async function main() {
     const api = await ApiPromise.create({ provider: wsProvider });
     const output1 = await api.query.dexModule.tickerDataStore();
     const output2 = await api.query.dexModule.dexDataStore();
+    const output3 = await api.query.dexModule.phpuDataStore();
 
     console.log(JSON.stringify(output1.toHuman()));
     console.log(JSON.stringify(output2.toHuman()));
+    console.log(JSON.stringify(output3.toHuman()));
 }
 
 main().catch(console.error).finally(() => process.exit());

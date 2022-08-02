@@ -9,7 +9,7 @@ async function main() {
     const api = await ApiPromise.create({ provider: wsProvider });
 
     const keyring_of_dex_account = new Keyring({ type: 'sr25519', ss58Format: 0 });
-    const dexAccount = keyring_of_dex_account.addFromAddress(process.env.DEX_ACCOUNT);
+    const phpuAccount = keyring_of_dex_account.addFromAddress(process.env.PHPU_ACCOUNT);
     
     // Testnet
     // const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
@@ -22,7 +22,7 @@ async function main() {
     const keyring = new Keyring({ type: 'sr25519' });
     const alice = keyring.addFromUri(process.env.ALICE_URI);
     await api.tx.sudo.sudo(
-        api.tx.dexModule.storeDexAccount(dexAccount.address)
+        api.tx.dexModule.storePhpuAccount(phpuAccount.address)
     ).signAndSend(alice);
 }
 
