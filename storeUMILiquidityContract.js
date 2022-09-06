@@ -8,22 +8,23 @@ async function main() {
     const wsProvider = new WsProvider(chain_address);
     const api = await ApiPromise.create({ provider: wsProvider });
 
-    const keyring_of_dex_account = new Keyring({ type: 'sr25519', ss58Format: 0 });
-    const phpuAccount = keyring_of_dex_account.addFromAddress(process.env.PHPU_ACCOUNT);
-    
+    const keyring_of_umi_liquidity_contract = new Keyring({ type: 'sr25519', ss58Format: 0 });
+    const umiLiquidityContract = keyring_of_umi_liquidity_contract.addFromAddress(process.env.UMI_LIQUIDITY_CONTRACT);
+
     // Testnet
     // const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
     // const sudo = keyring.addFromUri(process.env.SUDO);
     // await api.tx.sudo.sudo(
-    //     api.tx.dexModule.storeDexAccount(dexAccount.address)
+    //     api.tx.dexModule.storeUmiLiquidityContract(umiLiquidityContract.address)
     // ).signAndSend(sudo);
 
     // Dev
     const keyring = new Keyring({ type: 'sr25519' });
     const alice = keyring.addFromUri(process.env.ALICE_URI);
     await api.tx.sudo.sudo(
-        api.tx.dexModule.storePhpuAccount(phpuAccount.address)
+        api.tx.dexModule.storeUmiLiquidityContract(umiLiquidityContract.address)
     ).signAndSend(alice);
+
 }
 
 main().catch(console.error).finally(() => process.exit());

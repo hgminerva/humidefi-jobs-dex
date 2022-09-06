@@ -8,21 +8,21 @@ async function main() {
     const wsProvider = new WsProvider(chain_address);
     const api = await ApiPromise.create({ provider: wsProvider });
 
-    const keyring_of_phpu_liquidity_account = new Keyring({ type: 'sr25519', ss58Format: 0 });
-    const phpuLiquidityAccount = keyring_of_phpu_liquidity_account.addFromAddress(process.env.PHPU_LIQUIDITY_ACCOUNT);
-
+    const keyring_of_phpu_contract = new Keyring({ type: 'sr25519', ss58Format: 0 });
+    const phpuContract = keyring_of_phpu_contract.addFromAddress(process.env.PHPU_CONTRACT);
+    
     // Testnet
     // const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
     // const sudo = keyring.addFromUri(process.env.SUDO);
     // await api.tx.sudo.sudo(
-    //     api.tx.dexModule.storePhpuLiquidityAccount(phpuLiquidityAccount.address)
+    //     api.tx.dexModule.storePhpuContract(phpuContract.address)
     // ).signAndSend(sudo);
 
     // Dev
     const keyring = new Keyring({ type: 'sr25519' });
     const alice = keyring.addFromUri(process.env.ALICE_URI);
     await api.tx.sudo.sudo(
-        api.tx.dexModule.storePhpuLiquidityAccount(phpuLiquidityAccount.address)
+        api.tx.dexModule.storePhpuContract(phpuContract.address)
     ).signAndSend(alice);
 }
 
