@@ -12,18 +12,18 @@ async function main() {
     const dexAccount = keyring_of_dex_account.addFromAddress(process.env.DEX_ACCOUNT);
     
     // Testnet
-    const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
-    const sudo = keyring.addFromUri(process.env.SUDO);
-    await api.tx.sudo.sudo(
-        api.tx.dexModule.storeDexAccount(dexAccount.address)
-    ).signAndSend(sudo);
-
-    // Dev
-    // const keyring = new Keyring({ type: 'sr25519' });
-    // const alice = keyring.addFromUri(process.env.ALICE_URI);
+    // const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
+    // const sudo = keyring.addFromUri(process.env.SUDO);
     // await api.tx.sudo.sudo(
     //     api.tx.dexModule.storeDexAccount(dexAccount.address)
-    // ).signAndSend(alice);
+    // ).signAndSend(sudo);
+
+    // Dev
+    const keyring = new Keyring({ type: 'sr25519' });
+    const alice = keyring.addFromUri(process.env.ALICE_URI);
+    await api.tx.sudo.sudo(
+        api.tx.dexModule.storeDexAccount(dexAccount.address)
+    ).signAndSend(alice);
 }
 
 main().catch(console.error).finally(() => process.exit());

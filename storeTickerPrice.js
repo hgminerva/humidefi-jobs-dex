@@ -37,18 +37,18 @@ async function main() {
     const ticker_json = await getPrices();
 
     // Testnet
-    const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
-    const sudo = keyring.addFromUri(process.env.SUDO);
-    await api.tx.sudo.sudo(
-        api.tx.dexModule.storeTickerPrice(ticker_json)
-    ).signAndSend(sudo);
-
-    // Dev
-    // const keyring = new Keyring({ type: 'sr25519' });
-    // const alice = keyring.addFromUri(process.env.ALICE_URI);
+    // const keyring = new Keyring({ type: 'sr25519', ss58Format: 0 });
+    // const sudo = keyring.addFromUri(process.env.SUDO);
     // await api.tx.sudo.sudo(
     //     api.tx.dexModule.storeTickerPrice(ticker_json)
-    // ).signAndSend(alice);
+    // ).signAndSend(sudo);
+
+    // Dev
+    const keyring = new Keyring({ type: 'sr25519' });
+    const alice = keyring.addFromUri(process.env.ALICE_URI);
+    await api.tx.sudo.sudo(
+        api.tx.dexModule.storeTickerPrice(ticker_json)
+    ).signAndSend(alice);
 }
 
 main().catch(console.error).finally(() => process.exit());
