@@ -5,7 +5,8 @@ const { Keyring } =  require('@polkadot/keyring');
 
 async function main () {
   	// Test connection
-	const provider = new WsProvider('ws://127.0.0.1:9944');
+    const smoldot_rpc = process.env.SMOLDOT_RPC;
+	const provider = new WsProvider(smoldot_rpc);
 	const api = await ApiPromise.create({ provider });
 
   	const [chain, nodeName, nodeVersion] = await Promise.all([
