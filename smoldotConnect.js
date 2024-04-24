@@ -1,24 +1,43 @@
 require('dotenv').config();
 
 const { ApiPromise, WsProvider } = require('@polkadot/api');
+const { Keyring } =  require('@polkadot/keyring');
 
-// Define the URL of the Smoldot RPC node
-//const nodeUrl = 'ws://testrpcnodea01.xode.net/aRoyklGrhl9m2LlhX8NP/rpc';
-const nodeUrl = 'ws://192.168.5.52:9944'; // Change this to your RPC node URL
+async function main () {
+  	// Test connection
+	const provider = new WsProvider('ws://127.0.0.1:9944');
+	const api = await ApiPromise.create({ provider });
 
-// Create a provider for the node
-const provider = new WsProvider(nodeUrl);
+  	const [chain, nodeName, nodeVersion] = await Promise.all([
+    		api.rpc.system.chain(),
+    		api.rpc.system.name(),
+    		api.rpc.system.version()
+  	]);
 
-async function main() {
-  // Create an API instance using the provider
-  const api = await ApiPromise.create({ provider });
+  	console.log(`You are connected to chain ${chain} using ${nodeName} v${nodeVersion}`);
 
-// Retrieve the chain name
-const chain = await api.rpc.system.chain();
+  	// Query the balance
+	const lastHdr = await api.rpc.chain.getHeader();
+	const apiAt = await api.at(lastHdr.hash);
+	const ADDR = '5DGBcmzEFv9kLPAun5L3nQXC3hk5grzJbXi4wMZSdtEq5xw1';
+	//const { data: { free } } = await apiAt.query.system.account(ADDR);
 
-// Retrieve the latest header
-const lastHeader = await api.rpc.chain.getHeader();
+	//console.log(`${now}: balance of ${balance.free} and a nonce of ${nonce}`);
 
-// Log the information
-console.log(`${chain}: last block #${lastHeader.number} has hash ${lastHeader.hash}`);
+	// Transfer
+	const keyring = new Keyring({ type: 'sr25519' });
+	const alice = keyring.addFromUri('//Alice');
+	const unsub = await api.tx.balances.transfer(ADDR, 12345)
+  		.signAndSend(alice, (result) => {
+    			console.log(`Current status is ${result.status}`);
+    			if (result.status.isInBlock) {
+      				console.log(`Transaction included at blockHash ${result.status.asInBlock}`);
+    			} else if (result.status.isFinalized) {
+      				console.log(`Transaction finalized at blockHash ${result.status.asFinalized}`);
+      			unsub();
+    			}
+  	});
+
 }
+
+main().catch(console.error).finally(() => process.exit());
